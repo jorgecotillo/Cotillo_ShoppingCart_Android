@@ -25,7 +25,7 @@ namespace Cotillo_ShoppingCart_Android
             MobileBarcodeScanner.Initialize(Application);
 
             Button buttonScan = FindViewById<Button>(Resource.Id.buttonScan);
-            buttonScan.Click += async (sender, e) =>
+            buttonScan.Click += async (sender, e) => 
             {
 
                 var scanner = new ZXing.Mobile.MobileBarcodeScanner();
