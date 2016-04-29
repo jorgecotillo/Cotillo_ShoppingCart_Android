@@ -13,13 +13,13 @@ using Microsoft.WindowsAzure.MobileServices;
 
 namespace Cotillo_ShoppingCart_Android
 {
-    public class CommonActivity : Activity
+    public class CommonListActivity : ListActivity
     {
         protected string Barcode { get; set; }
         protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
 
         public override bool OnCreateOptionsMenu(IMenu menu)
-        {   
+        {
             MenuInflater inflater = this.MenuInflater;
             inflater.Inflate(Resource.Menu.Actions, menu);
             return true;
@@ -43,7 +43,7 @@ namespace Cotillo_ShoppingCart_Android
                     break;
                 case Resource.Id.action_add:
                     //Call Add to shopping cart service if Barcode is not null or empty
-                    if(!String.IsNullOrEmpty(Barcode))
+                    if (!String.IsNullOrEmpty(Barcode))
                     {
                         Toast
                             .MakeText(this, "Product added.", ToastLength.Short)
@@ -55,7 +55,7 @@ namespace Cotillo_ShoppingCart_Android
                             .MakeText(this, "Please select a product first.", ToastLength.Short)
                         .Show();
                     }
-                    
+
                     break;
                 default:
                     break;

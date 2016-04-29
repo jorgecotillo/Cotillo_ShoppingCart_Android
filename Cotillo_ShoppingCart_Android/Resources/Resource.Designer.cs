@@ -48,28 +48,46 @@ namespace Cotillo_ShoppingCart_Android
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int ic_add_shopping_cart_white_24dp = 2130837504;
+			public const int facebook_login = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int ic_barcode_money_sales_sale = 2130837505;
+			public const int ic_account_circle_white_24dp = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int ic_barcode_white = 2130837506;
+			public const int ic_add_shopping_cart_white_24dp = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int ic_home_white_24dp = 2130837507;
+			public const int ic_barcode_money_sales_sale = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int ic_payment_white_24dp = 2130837508;
+			public const int ic_barcode_white = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int ic_search_white_24dp = 2130837509;
+			public const int ic_home_white_24dp = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int ic_shopping_cart_white_24dp = 2130837510;
+			public const int ic_payment_white_24dp = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int Icon = 2130837511;
+			public const int ic_search_white_24dp = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int ic_shopping_cart_white_24dp = 2130837512;
+			
+			// aapt resource value: 0x7f020009
+			public const int ic_vpn_key_black_24dp = 2130837513;
+			
+			// aapt resource value: 0x7f02000a
+			public const int ic_vpn_key_white_24dp = 2130837514;
+			
+			// aapt resource value: 0x7f02000b
+			public const int Icon = 2130837515;
+			
+			// aapt resource value: 0x7f02000c
+			public const int login_button = 2130837516;
+			
+			// aapt resource value: 0x7f02000d
+			public const int register_button = 2130837517;
 			
 			static Drawable()
 			{
@@ -84,20 +102,47 @@ namespace Cotillo_ShoppingCart_Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060004
-			public const int action_add = 2131099652;
+			// aapt resource value: 0x7f06000d
+			public const int action_add = 2131099661;
 			
-			// aapt resource value: 0x7f060002
-			public const int action_home = 2131099650;
+			// aapt resource value: 0x7f06000a
+			public const int action_home = 2131099658;
 			
-			// aapt resource value: 0x7f060003
-			public const int action_search = 2131099651;
+			// aapt resource value: 0x7f06000b
+			public const int action_login = 2131099659;
+			
+			// aapt resource value: 0x7f06000c
+			public const int action_search = 2131099660;
+			
+			// aapt resource value: 0x7f060009
+			public const int contentFrame = 2131099657;
 			
 			// aapt resource value: 0x7f060000
-			public const int buttonScan = 2131099648;
+			public const int facebook_image = 2131099648;
+			
+			// aapt resource value: 0x7f060003
+			public const int imageView1 = 2131099651;
 			
 			// aapt resource value: 0x7f060001
-			public const int contentFrame = 2131099649;
+			public const int login_image = 2131099649;
+			
+			// aapt resource value: 0x7f060005
+			public const int product_description = 2131099653;
+			
+			// aapt resource value: 0x7f060006
+			public const int product_expiration_date = 2131099654;
+			
+			// aapt resource value: 0x7f060007
+			public const int product_price_excl_tax = 2131099655;
+			
+			// aapt resource value: 0x7f060008
+			public const int product_price_incl_tax = 2131099656;
+			
+			// aapt resource value: 0x7f060004
+			public const int product_title = 2131099652;
+			
+			// aapt resource value: 0x7f060002
+			public const int register_image = 2131099650;
 			
 			static Id()
 			{
@@ -134,16 +179,19 @@ namespace Cotillo_ShoppingCart_Android
 			public const int ProcessPayment = 2130903046;
 			
 			// aapt resource value: 0x7f030007
-			public const int ScanItem = 2130903047;
+			public const int Register = 2130903047;
 			
 			// aapt resource value: 0x7f030008
-			public const int ShoppingCart = 2130903048;
+			public const int ScanItem = 2130903048;
 			
 			// aapt resource value: 0x7f030009
-			public const int zxingscanneractivitylayout = 2130903049;
+			public const int ShoppingCart = 2130903049;
 			
 			// aapt resource value: 0x7f03000a
-			public const int zxingscannerfragmentlayout = 2130903050;
+			public const int zxingscanneractivitylayout = 2130903050;
+			
+			// aapt resource value: 0x7f03000b
+			public const int zxingscannerfragmentlayout = 2130903051;
 			
 			static Layout()
 			{

@@ -4,6 +4,11 @@
         android:icon="@drawable/ic_home_white_24dp"
         android:title="Home"
         android:showAsAction="ifRoom"/>
+
+  <item android:id="@+id/action_login"
+        android:icon="@drawable/ic_vpn_key_white_24dp"
+        android:title="Login"
+        android:showAsAction="ifRoom"/>
   
   <item
       android:id="@+id/action_search"
