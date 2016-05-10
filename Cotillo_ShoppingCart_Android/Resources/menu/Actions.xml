@@ -1,24 +1,42 @@
-﻿<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/action_account"
+    android:icon="@drawable/ic_account_circle_white_24dp"
+    android:title="Account"
+    android:visible="false"
+    android:orderInCategory="0"/>
+
+  <item
+    android:id="@+id/action_logoff"
+    android:icon="@drawable/ic_input_white_24dp"
+    android:title="Account"
+    android:visible="false"
+    android:orderInCategory="1"/>
 
   <item android:id="@+id/action_home"
         android:icon="@drawable/ic_home_white_24dp"
         android:title="Home"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="ifRoom"
+        android:orderInCategory="2"/>
 
   <item android:id="@+id/action_login"
         android:icon="@drawable/ic_vpn_key_white_24dp"
         android:title="Login"
-        android:showAsAction="ifRoom"/>
-  
+        android:showAsAction="ifRoom"
+        android:orderInCategory="3"/>
+
   <item
       android:id="@+id/action_search"
       android:icon="@drawable/ic_search_white_24dp"
       android:title="Scan"
-      android:showAsAction="ifRoom"/>
+      android:showAsAction="ifRoom"
+      android:orderInCategory="4"/>
 
   <item android:id="@+id/action_add"
         android:icon="@drawable/ic_add_shopping_cart_white_24dp"
         android:title="Add"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="ifRoom"
+        android:orderInCategory="5"/>
 
 </menu>

@@ -19,9 +19,39 @@ namespace Cotillo_ShoppingCart_Android
         protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
 
         public override bool OnCreateOptionsMenu(IMenu menu)
-        {   
+        {
+            //Inflate the items first so it can be manipulated later
             MenuInflater inflater = this.MenuInflater;
             inflater.Inflate(Resource.Menu.Actions, menu);
+
+            ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
+            string displayName = preferences.GetString("DisplayName", null);
+
+            if (!String.IsNullOrWhiteSpace(displayName))
+            {
+                var actionMenu = menu.FindItem(Resource.Id.action_login);
+                actionMenu.SetVisible(false);
+
+                var accountMenu = menu.FindItem(Resource.Id.action_account);
+                accountMenu.SetVisible(true);
+                accountMenu.SetShowAsAction(ShowAsAction.Always);
+
+                var logoffMenu = menu.FindItem(Resource.Id.action_logoff);
+                logoffMenu.SetVisible(true);
+                logoffMenu.SetShowAsAction(ShowAsAction.Always);
+            }
+            else
+            {
+                var actionMenu = menu.FindItem(Resource.Id.action_login);
+                actionMenu.SetVisible(true);
+
+                var accountMenu = menu.FindItem(Resource.Id.action_account);
+                accountMenu.SetVisible(false);
+
+                var logoffMenu = menu.FindItem(Resource.Id.action_logoff);
+                logoffMenu.SetVisible(false);
+            }
+
             return true;
         }
 
@@ -62,6 +92,20 @@ namespace Cotillo_ShoppingCart_Android
             }
 
             return true;
+        }
+
+        private void Logoff()
+        {
+            MobileService.LogoutAsync();
+            //Remove shared values
+            ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
+            ISharedPreferencesEditor editor = preferences.Edit();
+            editor.Clear();
+            editor.Commit();
+
+            //Go to home page so it can enable the icons
+            Intent homeActivity = new Intent(this, typeof(MainActivity));
+            StartActivity(homeActivity);
         }
     }
 }
