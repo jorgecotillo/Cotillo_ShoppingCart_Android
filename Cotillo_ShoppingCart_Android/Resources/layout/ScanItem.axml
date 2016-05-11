@@ -15,25 +15,30 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_title" />
+        android:id="@+id/product_title"
+        android:visibility="invisible" />
     <TextView
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_description" />
+        android:id="@+id/product_description"
+        android:visibility="invisible" />
     <TextView
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_expiration_date" />
+        android:id="@+id/product_expiration_date"
+        android:visibility="invisible" />
     <TextView
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_price_excl_tax" />
+        android:id="@+id/product_price_excl_tax"
+        android:visibility="invisible" />
     <TextView
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_price_incl_tax" />
+        android:id="@+id/product_price_incl_tax"
+        android:visibility="invisible" />
 </LinearLayout>

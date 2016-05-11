@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Net.Http;
 using Cotillo_ShoppingCart_Models;
+using Newtonsoft.Json;
 
 namespace Cotillo_ShoppingCart_Android
 {
@@ -58,7 +59,8 @@ namespace Cotillo_ShoppingCart_Android
             {
                 MobileService.CurrentUser = await GetUserFromPreferences(userId, providerType, authToken, preferences);
             }
-
+            
+            
             // If we have a user then we are done, if not then prompt the user to login
             // and save the credentials in the preferences
             while (MobileService.CurrentUser == null || MobileService.CurrentUser.UserId == null)
@@ -69,7 +71,6 @@ namespace Cotillo_ShoppingCart_Android
                 {
                     // Authenticate using provided provider type.
                     MobileServiceUser mobileServiceUser = await MobileService.LoginAsync(this, providerType);
-                    message = string.Format("You are now logged in - {0}", MobileService.CurrentUser.UserId);
 
                     // Create the credential package to store in the preferences
                     ISharedPreferencesEditor editor = preferences.Edit();
@@ -78,8 +79,6 @@ namespace Cotillo_ShoppingCart_Android
 
                     // Persist the credential package to the preferences
                     editor.Commit();
-
-                    //Verify if is first time user so it can be presented with the RegisterExternal activity
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -96,17 +95,38 @@ namespace Cotillo_ShoppingCart_Android
             {
                 try
                 {
-                    var extendedUserInfo =
-                        await MobileService.InvokeApiAsync<ExtendedUserInfoModel>("v1/account/external-info", HttpMethod.Get, null);
+                    string x = MobileService.CurrentUser.UserId.Replace("sid:", string.Empty);
+                    using (var client = new System.Net.Http.HttpClient())
+                    {   
+                        // Request the current user info from Facebook.
+                        using (var resp = await client.GetAsync($"https://cotilloshoppingcartazure20160410065220.azurewebsites.net/api/v1/account/external-user/{x}"))
+                        {
+                            if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+                            {
+                                //Display Register
+                                Intent registerExternalActivity = new Intent(this, typeof(RegisterExternalActivity));
+                                registerExternalActivity.PutExtra("ExternalAccount", MobileService.CurrentUser.UserId);
+                                StartActivity(registerExternalActivity);
+                                return;
+                            }
+                            else
+                            {
+                                var userInfo = await resp.Content.ReadAsStringAsync();
 
-                    if (extendedUserInfo != null)
-                    {
-                        // Create the display package to store the display name
-                        ISharedPreferencesEditor editorDisplayName = globalPreferences.Edit();
-                        editorDisplayName.PutString("DisplayName", extendedUserInfo.Name);
+                                ExtendedUserInfoModel extendedUserInfo = 
+                                    JsonConvert.DeserializeObject<ExtendedUserInfoModel>(userInfo);
 
-                        //Persit the changes
-                        editorDisplayName.Commit();
+                                if (extendedUserInfo != null)
+                                {
+                                    // Create the display package to store the display name
+                                    ISharedPreferencesEditor editorDisplayName = globalPreferences.Edit();
+                                    editorDisplayName.PutString("DisplayName", extendedUserInfo.Name);
+
+                                    //Persit the changes
+                                    editorDisplayName.Commit();
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)

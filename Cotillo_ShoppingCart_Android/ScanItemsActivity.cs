@@ -11,6 +11,9 @@ using Android.Views;
 using Android.Widget;
 using ZXing.Mobile;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Cotillo_ShoppingCart_Models;
+using Android.Graphics;
 
 namespace Cotillo_ShoppingCart_Android
 {
@@ -52,8 +55,21 @@ namespace Cotillo_ShoppingCart_Android
         private async Task GetProductInfo(ZXing.Result scanResult)
         {
             //Call Azure App Service (Web Api) to get Product Info
+            var product = 
+                await MobileService.InvokeApiAsync<ProductModel>($"v1/products/barcode/{scanResult.Text}", HttpMethod.Get, null);
 
             //Display product info
+            var productTitle = FindViewById<TextView>(Resource.Id.product_title);
+            productTitle.Visibility = ViewStates.Visible;
+            productTitle.Text = product.Name;
+
+            var productDescription = FindViewById<TextView>(Resource.Id.product_description);
+            productDescription.Visibility = ViewStates.Visible;
+            productDescription.Text = product.Name;
+
+            var image = FindViewById<ImageView>(Resource.Id.imageView1);
+            Bitmap bMap = BitmapFactory.DecodeByteArray(product.Image, 0, product.Image.Length);
+            image.SetImageBitmap(bMap);
         }
     }
 }

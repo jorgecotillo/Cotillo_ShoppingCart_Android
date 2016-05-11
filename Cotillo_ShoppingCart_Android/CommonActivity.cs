@@ -71,6 +71,9 @@ namespace Cotillo_ShoppingCart_Android
                     Intent login = new Intent(this, typeof(LoginActivity));
                     StartActivity(login);
                     break;
+                case Resource.Id.action_logoff:
+                    Logoff();
+                    break;
                 case Resource.Id.action_add:
                     //Call Add to shopping cart service if Barcode is not null or empty
                     if(!String.IsNullOrEmpty(Barcode))
