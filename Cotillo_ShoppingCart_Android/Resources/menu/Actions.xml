@@ -39,4 +39,10 @@
         android:showAsAction="ifRoom"
         android:orderInCategory="5"/>
 
+  <item android:id="@+id/action_list_cart"
+        android:icon="@drawable/ic_shopping_cart_white_24dp"
+        android:title="Shopping Cart"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="6"/>
+
 </menu>

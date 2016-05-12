@@ -1,0 +1,33 @@
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+  android:id="@+id/action_checkout"
+  android:icon="@drawable/ic_credit_card_white_24dp"
+  android:title="Checkout"
+  android:showAsAction="ifRoom"
+  android:orderInCategory="0"/>
+
+  <item android:id="@+id/action_remove"
+        android:icon="@drawable/ic_highlight_off_white_24dp"
+        android:title="Remove from cart"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="1"/>
+
+  <item
+    android:id="@+id/action_account"
+    android:icon="@drawable/ic_account_circle_white_24dp"
+    android:title="Account"
+    android:orderInCategory="2"/>
+
+  <item
+    android:id="@+id/action_logoff"
+    android:icon="@drawable/ic_input_white_24dp"
+    android:title="Logoff"
+    android:orderInCategory="3"/>
+
+  <item android:id="@+id/action_home"
+        android:icon="@drawable/ic_home_white_24dp"
+        android:title="Home"
+        android:orderInCategory="4"/>
+
+</menu>

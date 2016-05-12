@@ -22,28 +22,39 @@ namespace Cotillo_ShoppingCart_Android
         {
             base.OnCreate(bundle);
 
-            var list = await
-                        MobileService.InvokeApiAsync<List<CategorySummaryModel>>("v1/category/summary-list", HttpMethod.Get, null);
-            _items = new List<CommonItem>();
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.SetTitle("Loading");
+            progress.SetMessage("Wait while loading...");
+            progress.Show();
 
-            foreach (var item in list)
+            try
             {
-                _items.Add(new CommonItem() { Heading = $"Category: {item.CategoryName}", SubHeading = $"Count: {item.ProductCount.ToString()}" });
+                var list = await
+                            Helper.MobileService.InvokeApiAsync<List<CategorySummaryModel>>("v1/category/summary-list", HttpMethod.Get, null);
+                _items = new List<CommonItem>();
+
+                foreach (var item in list)
+                {
+                    _items.Add(new CommonItem() { Heading = $"Category: {item.CategoryName}", SubHeading = item.Location });
+                }
+
+                ListView.ChoiceMode = ChoiceMode.Single;
+
+                //This line is needed so that the ListView can use the datasource to display the items.
+                //Inspect ProductFeaturesAdapter and the code there shows which built-in layout is being used
+                ListAdapter = new ListFeaturesAdapter(this, _items);
+
+                ListView.ItemClick += ListView_ItemClick;
             }
-
-            //_items = new List<CommonItem>()
-            //{
-            //    new CommonItem() { Heading = "Hola", SubHeading = "Coco", ImageResourceId = Resource.Drawable.Icon },
-            //    new CommonItem() { Heading = "Coco", SubHeading = "Hola", ImageResourceId = Resource.Drawable.Icon }
-            //};
-
-            ListView.ChoiceMode = ChoiceMode.Single;
-            
-            //This line is needed so that the ListView can use the datasource to display the items.
-            //Inspect ProductFeaturesAdapter and the code there shows which built-in layout is being used
-            ListAdapter = new ProductFeaturesAdapter(this, _items);
-
-            ListView.ItemClick += ListView_ItemClick;
+            catch (Exception ex)
+            {
+                //Log error
+                Toast.MakeText(this, "An error occurred while processing your request", ToastLength.Long);
+            }
+            finally
+            {
+                progress.Dismiss();
+            }
         }
 
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -52,7 +63,10 @@ namespace Cotillo_ShoppingCart_Android
             {
                 var listView = sender as ListView;
                 var t = _items[e.Position];
-                Android.Widget.Toast.MakeText(this, t.Heading, Android.Widget.ToastLength.Short).Show();
+
+
+
+                Toast.MakeText(this, t.Heading, Android.Widget.ToastLength.Short).Show();
             }
         }
     }

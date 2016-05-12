@@ -16,11 +16,11 @@ using Cotillo_ShoppingCart_Models;
 
 namespace Cotillo_ShoppingCart_Android.ViewAdapters
 {
-    public class ProductFeaturesAdapter : BaseAdapter<CommonItem>
+    public class ListFeaturesAdapter : BaseAdapter<CommonItem>
     {
         List<CommonItem> _items;
         Activity _context;
-        public ProductFeaturesAdapter(Activity context, List<CommonItem> items)
+        public ListFeaturesAdapter(Activity context, List<CommonItem> items)
             : base()
         {
             this._context = context;

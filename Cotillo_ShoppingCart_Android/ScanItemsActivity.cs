@@ -69,11 +69,14 @@ namespace Cotillo_ShoppingCart_Android
             {
                 //Call Azure App Service (Web Api) to get Product Info
                 var product =
-                    await MobileService.InvokeApiAsync<ProductModel>($"v1/products/barcode/{scanResult.Text}", HttpMethod.Get, null);
+                    await Helper.MobileService.InvokeApiAsync<ProductModel>($"v1/products/barcode/{scanResult.Text}", HttpMethod.Get, null);
 
                 //Set ProductId in CommonActivity, this value will be used later in case the product
                 //is added to the shopping cart
                 base.ProductId = product.Id;
+
+                //Set Price, value to be used if the item is added to the cart
+                base.PriceIncTax = product.PriceIncTax;
 
                 //Display product info
                 var productTitle = FindViewById<TextView>(Resource.Id.product_title);
@@ -137,16 +140,18 @@ namespace Cotillo_ShoppingCart_Android
                 ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
                 string customerId = preferences.GetString("CustomerId", null);
 
-                var token = JToken.FromObject(new ShoppingCartModel()
+                List<ShoppingCartModel> shoppingCartItems = new List<ShoppingCartModel>();
+
+                shoppingCartItems.Add(new ShoppingCartModel()
                 {
-                    ProductId = base.ProductId,
-                    Quantity = 1
+                    ProductId = ProductId,
+                    Quantity = 1,
+                    PriceIncTax = PriceIncTax
                 });
 
-                var parameters = new Dictionary<string, string>();
-                parameters.Add("customerId", customerId);
+                var token = JToken.FromObject(shoppingCartItems);
 
-                await MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
+                await Helper.MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
 
                 Toast.MakeText(this, "Product successfully added, select scan or go to home page to continue", ToastLength.Long);
 

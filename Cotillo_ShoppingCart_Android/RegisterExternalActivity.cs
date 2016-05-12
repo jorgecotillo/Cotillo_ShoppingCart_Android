@@ -19,7 +19,6 @@ namespace Cotillo_ShoppingCart_Android
     [Activity(Label = "Cotillo's SuperMarket", MainLauncher = false, Icon = "@drawable/ic_shopping_cart_white_24dp")]
     public class RegisterExternalActivity : Activity
     {
-        protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
         private string ExternalAccount
         {
             get; set;
@@ -70,7 +69,7 @@ namespace Cotillo_ShoppingCart_Android
                 });
 
                 var customerToken = 
-                    await MobileService.InvokeApiAsync("v1/account/external", token);
+                    await Helper.MobileService.InvokeApiAsync("v1/account/external", token);
 
                 var customerModel = customerToken.ToObject<CustomerModel>();
                 

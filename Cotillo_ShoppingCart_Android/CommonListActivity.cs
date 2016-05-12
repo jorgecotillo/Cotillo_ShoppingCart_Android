@@ -20,8 +20,7 @@ namespace Cotillo_ShoppingCart_Android
     public class CommonListActivity : ListActivity
     {
         protected string Barcode { get; set; }
-        protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
-
+       
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             //Inflate the items first so it can be manipulated later
@@ -92,7 +91,10 @@ namespace Cotillo_ShoppingCart_Android
                             .MakeText(this, "Please select a product first.", ToastLength.Short)
                         .Show();
                     }
-
+                    break;
+                case Resource.Id.action_list_cart:
+                    Intent listCartActivity = new Intent(this, typeof(ShoppingCartActivity));
+                    StartActivity(listCartActivity);
                     break;
                 default:
                     break;
@@ -103,7 +105,7 @@ namespace Cotillo_ShoppingCart_Android
 
         private void Logoff()
         {
-            MobileService.LogoutAsync();
+            Helper.MobileService.LogoutAsync();
             //Remove shared values
             ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
             ISharedPreferencesEditor editor = preferences.Edit();

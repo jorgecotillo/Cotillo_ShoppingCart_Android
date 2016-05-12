@@ -21,8 +21,8 @@ namespace Cotillo_ShoppingCart_Android
     {
         protected string Barcode { get; set; }
         protected int ProductId { get; set; }
-        protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
-
+        protected double PriceIncTax { get; set; }
+        
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             //Inflate the items first so it can be manipulated later
@@ -96,7 +96,10 @@ namespace Cotillo_ShoppingCart_Android
                             .MakeText(this, "Please select a product first.", ToastLength.Short)
                         .Show();
                     }
-                    
+                    break;
+                case Resource.Id.action_list_cart:
+                    Intent listCartActivity = new Intent(this, typeof(ShoppingCartActivity));
+                    StartActivity(listCartActivity);
                     break;
                 default:
                     break;
@@ -107,7 +110,7 @@ namespace Cotillo_ShoppingCart_Android
 
         private void Logoff()
         {
-            MobileService.LogoutAsync();
+            Helper.MobileService.LogoutAsync();
             //Remove shared values
             ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
             ISharedPreferencesEditor editor = preferences.Edit();
@@ -130,17 +133,22 @@ namespace Cotillo_ShoppingCart_Android
             {
                 ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
                 string customerId = preferences.GetString("CustomerId", null);
-                
-                var token = JToken.FromObject(new ShoppingCartModel()
+
+                List<ShoppingCartModel> shoppingCartItems = new List<ShoppingCartModel>();
+
+                shoppingCartItems.Add(new ShoppingCartModel()
                 {
                     ProductId = ProductId,
-                    Quantity = 1
+                    Quantity = 1,
+                    PriceIncTax = PriceIncTax
                 });
+
+                var token = JToken.FromObject(shoppingCartItems);
 
                 var parameters = new Dictionary<string, string>();
                 parameters.Add("customerId", customerId);
 
-                await MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
+                await Helper.MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
 
                 Toast.MakeText(this, "Product successfully added, select scan or go to home page to continue", ToastLength.Long);
             }

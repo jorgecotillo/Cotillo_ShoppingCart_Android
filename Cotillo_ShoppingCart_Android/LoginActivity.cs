@@ -29,6 +29,15 @@ namespace Cotillo_ShoppingCart_Android
             ImageView facebookLogin = FindViewById<ImageView>(Resource.Id.facebook_image);
             facebookLogin.Click += FacebookLogin_Click;
 
+            ImageView regular = FindViewById<ImageView>(Resource.Id.login_image);
+            regular.Click += Regular_Click;
+
+        }
+
+        private void Regular_Click(object sender, EventArgs e)
+        {
+            Intent regLoginActivity = new Intent(this, typeof(RegularLoginActivity));
+            StartActivity(regLoginActivity);
         }
 
         private async void FacebookLogin_Click(object sender, EventArgs e)
@@ -57,20 +66,20 @@ namespace Cotillo_ShoppingCart_Android
             // There are credentials in the private preferences, get it from the preferences, verify that it's still valid
             if (!string.IsNullOrWhiteSpace(userId) && !string.IsNullOrWhiteSpace(authToken))
             {
-                MobileService.CurrentUser = await GetUserFromPreferences(userId, providerType, authToken, preferences);
+                Helper.MobileService.CurrentUser = await GetUserFromPreferences(userId, providerType, authToken, preferences);
             }
             
             
             // If we have a user then we are done, if not then prompt the user to login
             // and save the credentials in the preferences
-            while (MobileService.CurrentUser == null || MobileService.CurrentUser.UserId == null)
+            while (Helper.MobileService.CurrentUser == null || Helper.MobileService.CurrentUser.UserId == null)
             {
                 string message;
 
                 try
                 {
                     // Authenticate using provided provider type.
-                    MobileServiceUser mobileServiceUser = await MobileService.LoginAsync(this, providerType);
+                    MobileServiceUser mobileServiceUser = await Helper.MobileService.LoginAsync(this, providerType);
 
                     // Create the credential package to store in the preferences
                     ISharedPreferencesEditor editor = preferences.Edit();
@@ -95,7 +104,7 @@ namespace Cotillo_ShoppingCart_Android
             {
                 try
                 {
-                    string filteredUserId = MobileService.CurrentUser.UserId.Replace("sid:", string.Empty);
+                    string filteredUserId = Helper.MobileService.CurrentUser.UserId.Replace("sid:", string.Empty);
                     using (var client = new System.Net.Http.HttpClient())
                     {   
                         // Request the current user info from Facebook.
@@ -105,7 +114,7 @@ namespace Cotillo_ShoppingCart_Android
                             {
                                 //Display Register
                                 Intent registerExternalActivity = new Intent(this, typeof(RegisterExternalActivity));
-                                registerExternalActivity.PutExtra("ExternalAccount", MobileService.CurrentUser.UserId);
+                                registerExternalActivity.PutExtra("ExternalAccount", Helper.MobileService.CurrentUser.UserId);
                                 StartActivity(registerExternalActivity);
                                 return;
                             }
@@ -121,7 +130,7 @@ namespace Cotillo_ShoppingCart_Android
                                     // Create the display package to store the display name
                                     ISharedPreferencesEditor editorDisplayName = globalPreferences.Edit();
                                     editorDisplayName.PutString("DisplayName", extendedUserInfo.Name);
-
+                                    editorDisplayName.PutString("CustomerId", extendedUserInfo.UserId);
                                     //Persit the changes
                                     editorDisplayName.Commit();
                                 }
@@ -157,12 +166,12 @@ namespace Cotillo_ShoppingCart_Android
             mobileServiceUser.MobileServiceAuthenticationToken = authToken;
 
             // Set the user from the stored credentials.
-            MobileService.CurrentUser = mobileServiceUser;
+            Helper.MobileService.CurrentUser = mobileServiceUser;
 
             try
             {
                 // Try to make a call to verify that the credential has not expired
-                await MobileService.InvokeApiAsync("Alive", HttpMethod.Get, null);
+                await Helper.MobileService.InvokeApiAsync("Alive", HttpMethod.Get, null);
             }
             catch (MobileServiceInvalidOperationException ex)
             {

@@ -17,5 +17,7 @@ namespace Cotillo_ShoppingCart_Android.TableItems
         public string Heading { get; set; }
         public string SubHeading { get; set; }
         public int ImageResourceId { get; set; }
+        public double PriceIncTax { get; set; }
+        public int ProductId { get; set; }
     }
 }
