@@ -11,6 +11,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Microsoft.WindowsAzure.MobileServices;
+using System.Threading.Tasks;
+using Cotillo_ShoppingCart_Models;
+using System.Net.Http;
 
 namespace Cotillo_ShoppingCart_Android
 {
@@ -79,7 +82,6 @@ namespace Cotillo_ShoppingCart_Android
                     //Call Add to shopping cart service if Barcode is not null or empty
                     if (!String.IsNullOrEmpty(Barcode))
                     {
-                        AddToShoppingCart();
                         Toast
                             .MakeText(this, "Product added.", ToastLength.Short)
                         .Show();
@@ -111,11 +113,6 @@ namespace Cotillo_ShoppingCart_Android
             //Go to home page so it can enable the icons
             Intent homeActivity = new Intent(this, typeof(MainActivity));
             StartActivity(homeActivity);
-        }
-
-        private void AddToShoppingCart()
-        {
-
         }
     }
 }

@@ -9,36 +9,67 @@
         android:src="@android:drawable/ic_menu_gallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView1" />
+        android:id="@+id/imageView1"
+        android:visibility="invisible" />
     <TextView
-        android:text="Large Text"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_title"
         android:visibility="invisible" />
     <TextView
-        android:text="Text"
+        android:text="Description:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_description_label"
+        android:visibility="invisible" />
+    <TextView
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_description"
         android:visibility="invisible" />
     <TextView
-        android:text="Text"
+        android:text="Expiration Date:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_expiration_date_label"
+        android:visibility="invisible" />
+    <TextView
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_expiration_date"
         android:visibility="invisible" />
     <TextView
-        android:text="Text"
+        android:text="Price including tax:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_price_incl_tax_label"
+        android:visibility="invisible" />
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_price_incl_tax"
+        android:visibility="invisible" />
+    <TextView
+        android:text="Price excluding tax:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/product_price_excl_tax_label"
+        android:visibility="invisible" />
+    <TextView
+        android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_price_excl_tax"
         android:visibility="invisible" />
-    <TextView
-        android:text="Text"
+    <Button
+        android:text="Add to cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_price_incl_tax"
+        android:id="@+id/btnAddToCart"
         android:visibility="invisible" />
 </LinearLayout>

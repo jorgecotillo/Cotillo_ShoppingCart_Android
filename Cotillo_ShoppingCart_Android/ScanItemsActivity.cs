@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Cotillo_ShoppingCart_Models;
 using Android.Graphics;
+using Newtonsoft.Json.Linq;
 
 namespace Cotillo_ShoppingCart_Android
 {
@@ -25,6 +26,9 @@ namespace Cotillo_ShoppingCart_Android
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.ScanItem);
+
+            Button btnAddToCart = FindViewById<Button>(Resource.Id.btnAddToCart);
+            btnAddToCart.Click += BtnAddToCart_Click;
 
             MobileBarcodeScanner.Initialize(Application);
 
@@ -54,22 +58,110 @@ namespace Cotillo_ShoppingCart_Android
 
         private async Task GetProductInfo(ZXing.Result scanResult)
         {
-            //Call Azure App Service (Web Api) to get Product Info
-            var product = 
-                await MobileService.InvokeApiAsync<ProductModel>($"v1/products/barcode/{scanResult.Text}", HttpMethod.Get, null);
+            //Display progress dialog so the user knows that there is an event taking action
 
-            //Display product info
-            var productTitle = FindViewById<TextView>(Resource.Id.product_title);
-            productTitle.Visibility = ViewStates.Visible;
-            productTitle.Text = product.Name;
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.SetTitle("Loading");
+            progress.SetMessage("Wait while loading...");
+            progress.Show();
 
-            var productDescription = FindViewById<TextView>(Resource.Id.product_description);
-            productDescription.Visibility = ViewStates.Visible;
-            productDescription.Text = product.Name;
+            try
+            {
+                //Call Azure App Service (Web Api) to get Product Info
+                var product =
+                    await MobileService.InvokeApiAsync<ProductModel>($"v1/products/barcode/{scanResult.Text}", HttpMethod.Get, null);
 
-            var image = FindViewById<ImageView>(Resource.Id.imageView1);
-            Bitmap bMap = BitmapFactory.DecodeByteArray(product.Image, 0, product.Image.Length);
-            image.SetImageBitmap(bMap);
+                //Set ProductId in CommonActivity, this value will be used later in case the product
+                //is added to the shopping cart
+                base.ProductId = product.Id;
+
+                //Display product info
+                var productTitle = FindViewById<TextView>(Resource.Id.product_title);
+                productTitle.Visibility = ViewStates.Visible;
+                productTitle.Text = product.Name;
+
+                var productDescriptionLabel = FindViewById<TextView>(Resource.Id.product_description_label);
+                productDescriptionLabel.Visibility = ViewStates.Visible;
+
+                var productDescription = FindViewById<TextView>(Resource.Id.product_description);
+                productDescription.Visibility = ViewStates.Visible;
+                productDescription.Text = product.Description;
+
+                var productExpirationDateLabel = FindViewById<TextView>(Resource.Id.product_expiration_date_label);
+                productExpirationDateLabel.Visibility = ViewStates.Visible;
+
+                var productExpirationDate = FindViewById<TextView>(Resource.Id.product_expiration_date);
+                productExpirationDate.Visibility = ViewStates.Visible;
+                productExpirationDate.Text = product.ExpiresOn;
+
+                var productIncTaxLabel = FindViewById<TextView>(Resource.Id.product_price_incl_tax_label);
+                productIncTaxLabel.Visibility = ViewStates.Visible;
+
+                var productIncTax = FindViewById<TextView>(Resource.Id.product_price_incl_tax);
+                productIncTax.Visibility = ViewStates.Visible;
+                productIncTax.Text = product.PriceIncTax.ToString("C");
+
+                var image = FindViewById<ImageView>(Resource.Id.imageView1);
+                image.Visibility = ViewStates.Visible;
+                Bitmap bMap = BitmapFactory.DecodeByteArray(product.Image, 0, product.Image.Length);
+                image.SetImageBitmap(bMap);
+
+                Button btnAddToCart = FindViewById<Button>(Resource.Id.btnAddToCart);
+                btnAddToCart.Visibility = ViewStates.Visible;
+
+                //Setting the barcode property, this value is required so that the menu item (Add to shopping cart) can work.
+                //Add to shopping cart menu item looks up at this property and uses it to map to the proper product (probably good to use SharedPreferences instead?)
+                base.Barcode = scanResult.Text;
+            }
+            catch(Exception ex)
+            {
+                //Log error
+                Toast.MakeText(this, "An error ocurred while processing your request", ToastLength.Long);
+            }
+            finally
+            {
+                //Remove progress bar, page is fully loaded
+                progress.Dismiss();
+            }
+        }
+
+        private async void BtnAddToCart_Click(object sender, EventArgs e)
+        {
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.SetTitle("Loading");
+            progress.SetMessage("Wait while loading...");
+            progress.Show();
+
+            try
+            {
+                ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
+                string customerId = preferences.GetString("CustomerId", null);
+
+                var token = JToken.FromObject(new ShoppingCartModel()
+                {
+                    ProductId = base.ProductId,
+                    Quantity = 1
+                });
+
+                var parameters = new Dictionary<string, string>();
+                parameters.Add("customerId", customerId);
+
+                await MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
+
+                Toast.MakeText(this, "Product successfully added, select scan or go to home page to continue", ToastLength.Long);
+
+                Button btnAddToCart = FindViewById<Button>(Resource.Id.btnAddToCart);
+                btnAddToCart.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                //Log the error
+                Toast.MakeText(this, "An error ocurred while processing your request.", ToastLength.Long);
+            }
+            finally
+            {
+                progress.Dismiss();
+            }
         }
     }
 }

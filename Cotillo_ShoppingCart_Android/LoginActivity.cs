@@ -95,11 +95,11 @@ namespace Cotillo_ShoppingCart_Android
             {
                 try
                 {
-                    string x = MobileService.CurrentUser.UserId.Replace("sid:", string.Empty);
+                    string filteredUserId = MobileService.CurrentUser.UserId.Replace("sid:", string.Empty);
                     using (var client = new System.Net.Http.HttpClient())
                     {   
                         // Request the current user info from Facebook.
-                        using (var resp = await client.GetAsync($"https://cotilloshoppingcartazure20160410065220.azurewebsites.net/api/v1/account/external-user/{x}"))
+                        using (var resp = await client.GetAsync($"https://cotilloshoppingcartazure20160410065220.azurewebsites.net/api/v1/account/external-user/{filteredUserId}"))
                         {
                             if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
                             {

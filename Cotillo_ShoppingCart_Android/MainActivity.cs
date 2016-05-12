@@ -8,6 +8,8 @@ using Android.OS;
 using System.Collections.Generic;
 using Cotillo_ShoppingCart_Android.TableItems;
 using Cotillo_ShoppingCart_Android.ViewAdapters;
+using Cotillo_ShoppingCart_Models;
+using System.Net.Http;
 
 namespace Cotillo_ShoppingCart_Android
 {
@@ -16,15 +18,24 @@ namespace Cotillo_ShoppingCart_Android
     {
         List<CommonItem> _items;
 
-        protected override void OnCreate(Bundle bundle)
+        protected override async void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            _items = new List<CommonItem>()
+            var list = await
+                        MobileService.InvokeApiAsync<List<CategorySummaryModel>>("v1/category/summary-list", HttpMethod.Get, null);
+            _items = new List<CommonItem>();
+
+            foreach (var item in list)
             {
-                new CommonItem() { Heading = "Hola", SubHeading = "Coco", ImageResourceId = Resource.Drawable.Icon },
-                new CommonItem() { Heading = "Coco", SubHeading = "Hola", ImageResourceId = Resource.Drawable.Icon }
-            };
+                _items.Add(new CommonItem() { Heading = $"Category: {item.CategoryName}", SubHeading = $"Count: {item.ProductCount.ToString()}" });
+            }
+
+            //_items = new List<CommonItem>()
+            //{
+            //    new CommonItem() { Heading = "Hola", SubHeading = "Coco", ImageResourceId = Resource.Drawable.Icon },
+            //    new CommonItem() { Heading = "Coco", SubHeading = "Hola", ImageResourceId = Resource.Drawable.Icon }
+            //};
 
             ListView.ChoiceMode = ChoiceMode.Single;
             

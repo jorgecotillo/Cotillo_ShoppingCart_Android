@@ -105,53 +105,68 @@ namespace Cotillo_ShoppingCart_Android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f06000d
-			public const int action_account = 2131099661;
+			// aapt resource value: 0x7f060013
+			public const int action_account = 2131099667;
 			
-			// aapt resource value: 0x7f060012
-			public const int action_add = 2131099666;
+			// aapt resource value: 0x7f060018
+			public const int action_add = 2131099672;
 			
-			// aapt resource value: 0x7f06000f
-			public const int action_home = 2131099663;
+			// aapt resource value: 0x7f060015
+			public const int action_home = 2131099669;
 			
-			// aapt resource value: 0x7f060010
-			public const int action_login = 2131099664;
+			// aapt resource value: 0x7f060016
+			public const int action_login = 2131099670;
 			
-			// aapt resource value: 0x7f06000e
-			public const int action_logoff = 2131099662;
+			// aapt resource value: 0x7f060014
+			public const int action_logoff = 2131099668;
+			
+			// aapt resource value: 0x7f060017
+			public const int action_search = 2131099671;
 			
 			// aapt resource value: 0x7f060011
-			public const int action_search = 2131099665;
+			public const int btnAddToCart = 2131099665;
 			
-			// aapt resource value: 0x7f060005
-			public const int btnRegister = 2131099653;
+			// aapt resource value: 0x7f060006
+			public const int btnRegister = 2131099654;
 			
-			// aapt resource value: 0x7f06000c
-			public const int contentFrame = 2131099660;
+			// aapt resource value: 0x7f060012
+			public const int contentFrame = 2131099666;
 			
 			// aapt resource value: 0x7f060000
 			public const int facebook_image = 2131099648;
 			
-			// aapt resource value: 0x7f060006
-			public const int imageView1 = 2131099654;
+			// aapt resource value: 0x7f060007
+			public const int imageView1 = 2131099655;
 			
 			// aapt resource value: 0x7f060001
 			public const int login_image = 2131099649;
 			
-			// aapt resource value: 0x7f060008
-			public const int product_description = 2131099656;
+			// aapt resource value: 0x7f06000a
+			public const int product_description = 2131099658;
 			
 			// aapt resource value: 0x7f060009
-			public const int product_expiration_date = 2131099657;
+			public const int product_description_label = 2131099657;
 			
-			// aapt resource value: 0x7f06000a
-			public const int product_price_excl_tax = 2131099658;
+			// aapt resource value: 0x7f06000c
+			public const int product_expiration_date = 2131099660;
 			
 			// aapt resource value: 0x7f06000b
-			public const int product_price_incl_tax = 2131099659;
+			public const int product_expiration_date_label = 2131099659;
 			
-			// aapt resource value: 0x7f060007
-			public const int product_title = 2131099655;
+			// aapt resource value: 0x7f060010
+			public const int product_price_excl_tax = 2131099664;
+			
+			// aapt resource value: 0x7f06000f
+			public const int product_price_excl_tax_label = 2131099663;
+			
+			// aapt resource value: 0x7f06000e
+			public const int product_price_incl_tax = 2131099662;
+			
+			// aapt resource value: 0x7f06000d
+			public const int product_price_incl_tax_label = 2131099661;
+			
+			// aapt resource value: 0x7f060008
+			public const int product_title = 2131099656;
 			
 			// aapt resource value: 0x7f060002
 			public const int register_image = 2131099650;
@@ -161,6 +176,9 @@ namespace Cotillo_ShoppingCart_Android
 			
 			// aapt resource value: 0x7f060004
 			public const int txtEnterEmail = 2131099652;
+			
+			// aapt resource value: 0x7f060005
+			public const int txtEnterName = 2131099653;
 			
 			static Id()
 			{

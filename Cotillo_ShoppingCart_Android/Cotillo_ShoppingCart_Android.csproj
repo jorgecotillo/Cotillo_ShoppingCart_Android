@@ -94,6 +94,7 @@
     <Compile Include="CommonActivity.cs" />
     <Compile Include="CommonDisplayData.cs" />
     <Compile Include="CommonListActivity.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="LoginActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="RegisterActivity.cs" />

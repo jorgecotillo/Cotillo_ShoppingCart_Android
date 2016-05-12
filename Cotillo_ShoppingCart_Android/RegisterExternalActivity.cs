@@ -32,31 +32,53 @@ namespace Cotillo_ShoppingCart_Android
 
             Button btnRegister = FindViewById<Button>(Resource.Id.btnRegister);
             btnRegister.Click += BtnRegister_Click;
-
+            
             string externalAccount = Intent.GetStringExtra("ExternalAccount");
             this.ExternalAccount = externalAccount;
         }
 
-        private void BtnRegister_Click(object sender, EventArgs e)
+        private async void BtnRegister_Click(object sender, EventArgs e)
         {
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.SetTitle("Loading");
+            progress.SetMessage("Wait while loading...");
+            progress.Show();
+
             try
             {
                 TextView txtEmail = FindViewById<TextView>(Resource.Id.txtEnterEmail);
-                if (String.IsNullOrWhiteSpace(txtEmail.Text))
+                TextView txtName = FindViewById<TextView>(Resource.Id.txtEnterName);
+
+                if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                {
                     Toast.MakeText(this, "Enter an email please", ToastLength.Long);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtName.Text))
+                {
+                    Toast.MakeText(this, "Enter a name please", ToastLength.Long);
+                    return;
+                }
 
                 //Call Register API
                 JToken token = JToken.FromObject(new RegisterExternalModel()
                 {
                     Username = txtEmail.Text,
+                    Name = txtName.Text,
                     ExternalAccount = ExternalAccount
                 });
-                MobileService.InvokeApiAsync("v1/account/external", token);
+
+                var customerToken = 
+                    await MobileService.InvokeApiAsync("v1/account/external", token);
+
+                var customerModel = customerToken.ToObject<CustomerModel>();
                 
                 //Add the email value to shared preferences
                 ISharedPreferences globalPreferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
                 ISharedPreferencesEditor editorDisplayName = globalPreferences.Edit();
                 editorDisplayName.PutString("DisplayName", txtEmail.Text);
+                editorDisplayName.PutString("CustomerId", customerModel.CustomerId.ToString());
 
                 //Persit the changes
                 editorDisplayName.Commit();
@@ -65,10 +87,14 @@ namespace Cotillo_ShoppingCart_Android
                 Intent homeActivity = new Intent(this, typeof(MainActivity));
                 StartActivity(homeActivity);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
-                throw;
+                //Log error
+                Toast.MakeText(this, "An error ocurred while processing your request", ToastLength.Long);
+            }
+            finally
+            {
+                progress.Dismiss();
             }
         }
 

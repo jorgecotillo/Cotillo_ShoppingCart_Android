@@ -10,12 +10,17 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Microsoft.WindowsAzure.MobileServices;
+using Cotillo_ShoppingCart_Models;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Cotillo_ShoppingCart_Android
 {
     public class CommonActivity : Activity
     {
         protected string Barcode { get; set; }
+        protected int ProductId { get; set; }
         protected static MobileServiceClient MobileService = new MobileServiceClient("https://cotilloshoppingcartazure20160410065220.azurewebsites.net/");
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -78,9 +83,12 @@ namespace Cotillo_ShoppingCart_Android
                     //Call Add to shopping cart service if Barcode is not null or empty
                     if(!String.IsNullOrEmpty(Barcode))
                     {
-                        Toast
-                            .MakeText(this, "Product added.", ToastLength.Short)
-                        .Show();
+                        AddToShoppingCart();
+
+                        //Task
+                        //    .Run(async () => await AddToShoppingCart())
+                        //    .ContinueWith(i => Toast.MakeText(this, "Product added", ToastLength.Long))
+                        //    .Wait();
                     }
                     else
                     {
@@ -109,6 +117,42 @@ namespace Cotillo_ShoppingCart_Android
             //Go to home page so it can enable the icons
             Intent homeActivity = new Intent(this, typeof(MainActivity));
             StartActivity(homeActivity);
+        }
+
+        private async Task AddToShoppingCart()
+        {
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.SetTitle("Loading");
+            progress.SetMessage("Wait while loading...");
+            progress.Show();
+
+            try
+            {
+                ISharedPreferences preferences = this.GetSharedPreferences("globalValues", FileCreationMode.Private);
+                string customerId = preferences.GetString("CustomerId", null);
+                
+                var token = JToken.FromObject(new ShoppingCartModel()
+                {
+                    ProductId = ProductId,
+                    Quantity = 1
+                });
+
+                var parameters = new Dictionary<string, string>();
+                parameters.Add("customerId", customerId);
+
+                await MobileService.InvokeApiAsync($"v1/shopping-cart/customer/{customerId}", token);
+
+                Toast.MakeText(this, "Product successfully added, select scan or go to home page to continue", ToastLength.Long);
+            }
+            catch (Exception ex)
+            {
+                //Log the error
+                Toast.MakeText(this, "An error ocurred while processing your request.", ToastLength.Long);
+            }
+            finally
+            {
+                progress.Dismiss();
+            }
         }
     }
 }

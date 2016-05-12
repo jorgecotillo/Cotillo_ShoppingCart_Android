@@ -10,6 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Cotillo_ShoppingCart_Android.TableItems;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Net.Http;
+using Cotillo_ShoppingCart_Models;
 
 namespace Cotillo_ShoppingCart_Android.ViewAdapters
 {
@@ -38,7 +41,6 @@ namespace Cotillo_ShoppingCart_Android.ViewAdapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var item = _items[position];
-
             // SIMPLE LIST ITEM 1
             //View view = convertView;
             //if (view == null)
@@ -46,9 +48,9 @@ namespace Cotillo_ShoppingCart_Android.ViewAdapters
             //view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Heading;
 
             // SIMPLE LIST ITEM 2
-            //View view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
-            //view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Heading;
-            //view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.SubHeading;
+            View view = _context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Heading;
+            view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.SubHeading;
 
             // SIMPLE SELECTABLE LIST ITEM
             // View view = context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleSelectableListItem, null);
@@ -81,9 +83,9 @@ namespace Cotillo_ShoppingCart_Android.ViewAdapters
             //view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.SubHeading;
 
             // ACTIVITY LIST ITEM
-            View view = _context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Heading;
-            view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.ImageResourceId);
+            //View view = _context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
+            //view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Heading;
+            //view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.ImageResourceId);
 
             // TEST LIST ITEM
             //View view = context.LayoutInflater.Inflate(Android.Resource.Layout.TestListItem, null);
